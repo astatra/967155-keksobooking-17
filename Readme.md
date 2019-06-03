@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анна Руль](https://up.htmlacademy.ru/javascript/17/user/967155).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Ключковский](https://htmlacademy.ru/profile/id44700).
 
 ---
 
