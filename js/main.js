@@ -34,6 +34,9 @@ function offers(objectsNumber) {
   return generalArray;
 }
 
+var element = document.querySelector('.map');
+element.classList.remove('map--faded');
+
 function makeSample(objects) {
   var pinTemplate = document.querySelector('#pin');
   var pinSample = pinTemplate.content.querySelector('.map__pin');
