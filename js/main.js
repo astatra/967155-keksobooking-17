@@ -5,10 +5,21 @@ var MAP_WIDTH = 1200;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
+var isCurrentlyActive = false;
+
+/**
+ * @param {number} min
+ * @param {number} max
+ * @return {number}
+ */
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * @param {number} objectsNumber
+ * @return {Description[]}
+ */
 function offers(objectsNumber) {
   var generalArray = [];
   var minY = 130;
@@ -34,9 +45,9 @@ function offers(objectsNumber) {
   return generalArray;
 }
 
-var element = document.querySelector('.map');
-element.classList.remove('map--faded');
-
+/**
+ * @param {Description[]} objects
+ */
 function makeSample(objects) {
   var pinTemplate = document.querySelector('#pin');
   var pinSample = pinTemplate.content.querySelector('.map__pin');
@@ -61,4 +72,104 @@ function makeSample(objects) {
   container.appendChild(fragment);
 }
 
-makeSample(offers(8));
+
+/**
+ * @param {boolean} isActive
+ */
+function togglePage(isActive) {
+  var mapImage = document.querySelector('.map');
+  var form = document.querySelector('.ad-form');
+  var formElements = form.querySelectorAll('fieldset');
+
+  mapImage.classList.toggle('map--faded', !isActive);
+  form.classList.toggle('ad-form--disabled', !isActive);
+
+  Array.from(formElements).forEach(function (element) {
+    element.disabled = !isActive;
+  });
+}
+
+var pinMain = document.querySelector('.map__pin--main');
+
+pinMain.addEventListener('click', function () {
+  if (!isCurrentlyActive) {
+    togglePage(true);
+    makeSample(offers(8));
+
+    var smallPins = document.querySelectorAll('.map__pin');
+
+    Array.from(smallPins).forEach(function (element) {
+      element.addEventListener('click', onPinClick);
+    });
+
+    isCurrentlyActive = true;
+  }
+});
+
+togglePage(false);
+setAddressFromPin(pinMain);
+
+/**
+ * @param {MouseEvent} evt
+ */
+function onPinClick(evt) {
+  var pin = /** @type {HTMLElement} */ (
+    evt.currentTarget
+  );
+
+  setAddressFromPin(pin);
+}
+
+/**
+ * @param {HTMLElement} pin
+ * @return {[number, number]}
+ */
+function getPinsLocation(pin) {
+  var leftLocation = parseInt(pin.style.left, 10) + PIN_WIDTH / 2;
+  var topLocation = parseInt(pin.style.top, 10) + PIN_HEIGHT;
+
+  return [leftLocation, topLocation];
+}
+/**
+ * @param {number} x
+ * @param {number} y
+ */
+function setAddress(x, y) {
+  var address = /** @type {HTMLInputElement} */ (
+    document.querySelector('#address')
+  );
+
+  address.value = x + ',' + y;
+}
+
+/**
+ * @param {HTMLElement} pin
+ */
+function setAddressFromPin(pin) {
+  var resultLocation = getPinsLocation(pin);
+
+  setAddress(resultLocation[0], resultLocation[1]);
+}
+
+/**
+ * @typedef {Object} Description
+ * @prop {Author} author
+ * @prop {Offer} offer
+ * @prop {DescriptionLocation} location
+ */
+
+/**
+ * @typedef {Object} Author
+ * @prop {string} avatar
+ */
+
+/**
+ * @typedef {Object} Offer
+ * @prop {string} type
+ */
+
+/**
+ * @typedef {Object} DescriptionLocation
+ * @prop {number} x
+ * @prop {number} y
+ */
