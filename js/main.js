@@ -20,7 +20,7 @@ function getRandom(min, max) {
  * @param {number} objectsNumber
  * @return {Description[]}
  */
-function offers(objectsNumber) {
+function getOffers(objectsNumber) {
   var generalArray = [];
   var minY = 130;
   var maxY = 630;
@@ -94,7 +94,7 @@ var pinMain = document.querySelector('.map__pin--main');
 pinMain.addEventListener('click', function () {
   if (!isCurrentlyActive) {
     togglePage(true);
-    makeSample(offers(8));
+    makeSample(getOffers(8));
 
     isCurrentlyActive = true;
   }
@@ -111,7 +111,7 @@ setAddressFromPin(pinMain);
  * @param {HTMLElement} pin
  * @return {[number, number]}
  */
-function getPinsLocation(pin) {
+function getPinLocation(pin) {
   var leftLocation = parseInt(pin.style.left, 10) + PIN_WIDTH / 2;
   var topLocation = parseInt(pin.style.top, 10) + PIN_HEIGHT;
 
@@ -133,7 +133,7 @@ function setAddress(x, y) {
  * @param {HTMLElement} pin
  */
 function setAddressFromPin(pin) {
-  var resultLocation = getPinsLocation(pin);
+  var resultLocation = getPinLocation(pin);
 
   setAddress(resultLocation[0], resultLocation[1]);
 }
