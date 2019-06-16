@@ -96,29 +96,16 @@ pinMain.addEventListener('click', function () {
     togglePage(true);
     makeSample(offers(8));
 
-    var smallPins = document.querySelectorAll('.map__pin');
-
-    Array.from(smallPins).forEach(function (element) {
-      element.addEventListener('click', onPinClick);
-    });
-
     isCurrentlyActive = true;
   }
 });
 
+pinMain.addEventListener('mouseup', function (evt) {
+  setAddressFromPin(evt.currentTarget);
+});
+
 togglePage(false);
 setAddressFromPin(pinMain);
-
-/**
- * @param {MouseEvent} evt
- */
-function onPinClick(evt) {
-  var pin = /** @type {HTMLElement} */ (
-    evt.currentTarget
-  );
-
-  setAddressFromPin(pin);
-}
 
 /**
  * @param {HTMLElement} pin
