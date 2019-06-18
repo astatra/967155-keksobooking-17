@@ -5,6 +5,21 @@ var MAP_WIDTH = 1200;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
+var offerTypes = {
+  bungalo: {
+    minPrice: 0,
+  },
+  flat: {
+    minPrice: 1000,
+  },
+  house: {
+    minPrice: 5000,
+  },
+  palace: {
+    minPrice: 10000,
+  }
+};
+
 var isCurrentlyActive = false;
 
 /**
@@ -137,6 +152,73 @@ function setAddressFromPin(pin) {
 
   setAddress(resultLocation[0], resultLocation[1]);
 }
+
+function getHousePrice() {
+  var housingType = document.querySelector('#type');
+
+  return offerTypes[housingType.value].minPrice;
+}
+
+function setPrice() {
+  var priceHolder = document.querySelector('#price');
+  var minPrice = getHousePrice();
+
+  priceHolder.setAttribute('placeholder', minPrice);
+  priceHolder.setAttribute('min', minPrice);
+}
+
+setPrice();
+
+var housingType = document.querySelector('#type');
+housingType.addEventListener('change', function () {
+  setPrice();
+});
+
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+
+timeOut.addEventListener('change', function () {
+  timeIn.value = timeOut.value;
+});
+
+timeIn.addEventListener('change', function () {
+  timeOut.value = timeIn.value;
+});
+
+function showSuccess() {
+  var successTemplate = document.querySelector('#success');
+  var successWindow = successTemplate.content.querySelector('.success');
+  var body = document.body;
+  var wrap = successWindow.cloneNode(true);
+
+  body.appendChild(wrap);
+}
+
+function showError() {
+  var errorTemplate = document.querySelector('#error');
+  var errorWindow = errorTemplate.content.querySelector('.error');
+  var body = document.body;
+  var wrap = errorWindow.cloneNode(true);
+
+  var buttonAgain = wrap.querySelector('.error__button');
+  buttonAgain.addEventListener('click', function () {
+    body.removeChild(wrap);
+  });
+
+  body.appendChild(wrap);
+}
+
+var form = document.querySelector('.ad-form');
+
+form.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+
+  if (form.checkValidity() === true) {
+    showSuccess();
+  } else {
+    showError();
+  }
+});
 
 /**
  * @typedef {Object} Description
