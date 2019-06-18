@@ -191,6 +191,26 @@ function showSuccess() {
   var body = document.body;
   var wrap = successWindow.cloneNode(true);
 
+  function addKeyDownListener(evt) {
+    if (evt.keyCode === 27) {
+      hideSuccessMsg();
+    }
+  }
+
+  function addEscapeClick() {
+    hideSuccessMsg();
+  }
+
+  function hideSuccessMsg() {
+    body.removeChild(wrap);
+    document.removeEventListener('keydown', addKeyDownListener);
+    document.removeEventListener('click', addEscapeClick);
+    form.reset();
+  }
+
+  document.addEventListener('keydown', addKeyDownListener);
+  document.addEventListener('click', addEscapeClick);
+
   body.appendChild(wrap);
 }
 
@@ -199,8 +219,8 @@ function showError() {
   var errorWindow = errorTemplate.content.querySelector('.error');
   var body = document.body;
   var wrap = errorWindow.cloneNode(true);
-
   var buttonAgain = wrap.querySelector('.error__button');
+
   buttonAgain.addEventListener('click', function () {
     body.removeChild(wrap);
   });
