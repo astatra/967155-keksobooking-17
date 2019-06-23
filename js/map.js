@@ -41,7 +41,12 @@
   function activatePage() {
     if (!isCurrentlyActive) {
       togglePage(true);
-      renderSamples(window.offersCreator.getOffers(8));
+
+      window.offersCreator.getOffers(function (data) {
+        renderSamples(data);
+      }, function () {
+        window.errorMsg.show();
+      });
 
       isCurrentlyActive = true;
     }
