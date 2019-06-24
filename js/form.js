@@ -73,20 +73,6 @@ window.bookingForm = (function () {
     body.appendChild(wrap);
   }
 
-  function showError() {
-    var errorTemplate = document.querySelector('#error');
-    var errorWindow = errorTemplate.content.querySelector('.error');
-    var body = document.body;
-    var wrap = errorWindow.cloneNode(true);
-    var buttonAgain = wrap.querySelector('.error__button');
-
-    buttonAgain.addEventListener('click', function () {
-      body.removeChild(wrap);
-    });
-
-    body.appendChild(wrap);
-  }
-
   function toggleForm(isActive) {
     var formElements = form.querySelectorAll('fieldset');
 
@@ -112,10 +98,10 @@ window.bookingForm = (function () {
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    if (form.checkValidity() === true) {
+    if (form.checkValidity()) {
       showSuccess();
     } else {
-      showError();
+      window.errorMsg.show();
     }
   });
 
