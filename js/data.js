@@ -5,8 +5,23 @@ window.offersCreator = (function () {
     window.serverApi.fetchOffers(successCallback, errorCallback);
   }
 
+  function isOfferTypeMatches(item, type) {
+    if (type === 'any') {
+      return true;
+    }
+
+    return item.offer.type === type;
+  }
+
+  function filterOffers(offers, filters) {
+    return offers.filter(function (item) {
+      return isOfferTypeMatches(item, filters.type);
+    });
+  }
+
   return {
     getOffers: getOffers,
+    filterOffers: filterOffers,
   };
 })();
 

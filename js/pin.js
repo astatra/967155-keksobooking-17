@@ -31,7 +31,16 @@ window.pinCreator = (function () {
     return wrap;
   }
 
+  function clearPins(container) {
+    var pins = container.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    Array.from(pins).forEach(function (pin) {
+      pin.remove();
+    });
+  }
+
   return {
-    makeSamples: makeSamples
+    makeSamples: makeSamples,
+    clearPins: clearPins,
   };
 })();
