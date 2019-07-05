@@ -18,6 +18,6 @@ window.serverApi = (function () {
   }
 
   return {
-    fetchOffers: fetchOffers
+    fetchOffers: fetchOffers,
   };
 })();
