@@ -41,10 +41,16 @@
    * @param {boolean} isActive
    */
   function togglePage(isActive) {
-    var mapImage = document.querySelector('.map');
-    mapImage.classList.toggle('map--faded', !isActive);
+    map.classList.toggle('map--faded', !isActive);
 
     window.bookingForm.toggleForm(isActive);
+  }
+
+  function showCard(offer) {
+    var cardElement = window.card.renderOffer(offer);
+    var filters = map.querySelector('.map__filters-container');
+
+    map.insertBefore(cardElement, filters);
   }
 
   function activatePage() {
@@ -55,6 +61,8 @@
         offersData = data;
 
         applyFilters();
+        showCard(data[0]);
+
       }, function () {
         window.errorMsg.show();
       });
