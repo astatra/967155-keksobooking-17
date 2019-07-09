@@ -12,6 +12,7 @@
   var startCoords;
   var offset;
   var offersData;
+  var openedCard = null;
 
   function getInRange(location, minSize, maxSize) {
     if (location > maxSize) {
@@ -25,10 +26,18 @@
     return location;
   }
 
+  function onPinClick(offerData) {
+    showCard(offerData);
+  }
+
   function renderSamples(objects) {
     var container = document.querySelector('.map__pins');
 
-    container.appendChild(window.pinCreator.makeSamples(objects));
+    objects.forEach(function (item) {
+      var pin = window.pinCreator.createPin(item, onPinClick);
+
+      container.appendChild(pin.render());
+    });
   }
 
   function clearSamples() {
@@ -46,11 +55,23 @@
     window.bookingForm.toggleForm(isActive);
   }
 
+  function closeCard() {
+    if (openedCard) {
+      openedCard.destroy();
+
+      openedCard = null;
+    }
+  }
+
   function showCard(offer) {
-    var cardElement = window.card.renderOffer(offer);
+    var cardElement = window.card.createCard(offer, closeCard);
     var filters = map.querySelector('.map__filters-container');
 
-    map.insertBefore(cardElement, filters);
+    closeCard();
+
+    openedCard = cardElement;
+
+    map.insertBefore(cardElement.render(), filters);
   }
 
   function activatePage() {
@@ -61,8 +82,6 @@
         offersData = data;
 
         applyFilters();
-        showCard(data[0]);
-
       }, function () {
         window.errorMsg.show();
       });
